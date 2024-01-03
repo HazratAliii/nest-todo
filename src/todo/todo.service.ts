@@ -7,22 +7,28 @@ import { Model } from 'mongoose';
 export class TodoService {
   constructor(@InjectModel('Todo') private readonly todoModel: Model<Todo>) {}
 
-  getAllTodos(): Promise<Todo[]> {
-    return this.todoModel.find();
+  async getAllTodos(): Promise<Todo[]> {
+    return await this.todoModel.find();
   }
 
-  getSingleTodo(id): string {
-    return `Todo id ${id}`;
+  async getSingleTodo(id): Promise<Todo> {
+    return await this.todoModel.findById({ id });
   }
 
-  deleteTodo(id): string {
-    return `${id}`;
+  async deleteTodo(id): Promise<string> {
+    await this.todoModel.deleteOne({ _id: id });
+    return 'deleted';
   }
 
   updateTodo(id): string {
     return `Update ${id}`;
   }
-  addTodo(): string {
-    return 'Hello';
+  async addTodo(todo): Promise<string> {
+    try {
+      await this.todoModel.create(todo);
+    } catch (e) {
+      console.log('Something went wrong');
+    }
+    return 'Todo added';
   }
 }

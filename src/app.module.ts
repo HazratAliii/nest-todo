@@ -9,10 +9,11 @@ import { TodoModule } from './todo/todo.module';
   imports: [
     MongooseModule.forRoot(
       'mongodb+srv://hazratali:mongodbatlas@cluster0.bpoue.mongodb.net/?retryWrites=true&w=majority/nest-todo',
+      // `${process.env.MONGODB_URI}`,
     ),
     TodoModule,
   ],
   controllers: [AppController, TodoController],
-  providers: [AppService, TodoService],
+  providers: [AppService],
 })
 export class AppModule {}
