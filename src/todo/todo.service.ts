@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { Todo } from './model.todo';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -16,12 +16,22 @@ export class TodoService {
   }
 
   async deleteTodo(id): Promise<string> {
-    await this.todoModel.deleteOne({ _id: id });
+    try {
+      await this.todoModel.deleteOne({ _id: id });
+    } catch (e) {
+      console.log(e);
+    }
     return 'deleted';
   }
 
-  updateTodo(id): string {
-    return `Update ${id}`;
+  async updateTodo(id, body): Promise<String> {
+    try {
+      console.log('Body1', body, 'id ', id);
+      await this.todoModel.findByIdAndUpdate(id, { $set: body }, { new: true });
+    } catch (e) {
+      console.log('Something went wrong');
+    }
+    return `Updated`;
   }
   async addTodo(todo): Promise<string> {
     try {

@@ -37,7 +37,7 @@ export class TodoController {
   }
 
   @Put(':id')
-  updateTodo(@Param() params): string {
-    return this.todoService.updateTodo(params.id);
+  updateTodo(@Param() params, @Body() body): Promise<String> {
+    return this.todoService.updateTodo(params.id, body);
   }
 }
